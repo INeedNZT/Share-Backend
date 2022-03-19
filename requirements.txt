@@ -11,8 +11,10 @@ idna==3.3
 isort==5.10.1
 lazy-object-proxy==1.7.1
 mccabe==0.6.1
+mysql-connector-python==8.0.28
 Pillow==8.4.0
 platformdirs==2.4.1
+protobuf==3.19.4
 pycodestyle==2.8.0
 pyflakes==2.4.0
 pylint==2.12.2

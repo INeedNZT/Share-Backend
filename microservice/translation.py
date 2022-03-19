@@ -13,7 +13,7 @@ def translate(source_text):
 
 @sio.event
 def getChinese(sid, data):
-    sio.emit("rtranslation", {"text":translate(data["text"]), "index":data["index"]})
+    return {"text":translate(data["text"]), "index":data["index"]}
 
 
 if __name__ == '__main__':
