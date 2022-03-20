@@ -18,6 +18,7 @@ sqlConn = None
 def connect(sid, environ, auth):
     print("Successfully connected", sid)
 
+# send message to the user in the same room(channel)
 @sio.event
 def smessage(sid, data):
     sio.emit(event='rmessage', data={"msg":data["content"], 
@@ -25,6 +26,7 @@ def smessage(sid, data):
     "imgData":data["imgData"]}, room=data["groupId"], skip_sid=sid)
     print(sid + " successfully send message to the room " + data["groupId"]+", " + data["content"])
 
+# login verification
 @sio.event
 def login(sid, data):
     mycursor = sqlConn.cursor()
@@ -39,6 +41,7 @@ def login(sid, data):
     mycursor.close()
     return r
 
+# register event
 @sio.event
 def register(sid, data):
     mycursor = sqlConn.cursor()
@@ -67,16 +70,19 @@ def updateUser(sid, data):
     mycursor.close()
     return r
 
+# put user session into the room
 @sio.event
 def joinRoom(sid, data):
     sio.enter_room(sid, data["groupId"])
-    print("join the room "+ data["groupId"] + ", " + sid + "," + data["userId"])
+    # print("join the room "+ data["groupId"] + ", " + sid + "," + data["userId"])
 
+# put user session into the room
 @sio.event
 def quitRoom(sid, data):
     sio.leave_room(sid, data["groupId"])
-    print("leave the room "+ data["groupId"] + ", " + sid + "," + data["userId"])
+    # print("leave the room "+ data["groupId"] + ", " + sid + "," + data["userId"])
 
+# disconnect from server
 @sio.event
 def disconnect(sid):
     rooms = sio.rooms(sid)
@@ -91,6 +97,7 @@ if __name__ == '__main__':
         # create a mysql db connection
         sqlConn = SqlHelper.initDbInstance(SqlHelper)
         assert isinstance(sqlConn, MySQLConnection)
+        # start server
         eventlet.wsgi.server(eventlet.listen(('127.0.0.1', 5000)), app, log_output=None)
     except SystemExit:
         print("Close the sql connector after eventlet server stop")

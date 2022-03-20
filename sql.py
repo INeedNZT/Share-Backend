@@ -2,6 +2,7 @@ import mysql.connector
 
 
 class SqlHelper():
+    # create a database instance 
     def initDbInstance(self):
         self.mydb = mysql.connector.connect(
             host="localhost",
@@ -11,6 +12,7 @@ class SqlHelper():
         self.__checkDB(self)
         return self.mydb
 
+    # check database status, if not exists create one!
     def __checkDB(self):
         mycursor = self.mydb.cursor()
         mycursor.execute("""SELECT SCHEMA_NAME
